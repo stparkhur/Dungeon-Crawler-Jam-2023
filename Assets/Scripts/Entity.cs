@@ -21,7 +21,6 @@ public class Entity : MonoBehaviour
     private GameObject player;
 
     // Nav related vars
-    private int gridSize = 2;
     private Navigator navigator;
     private Vector3Int entityCoordinate;
     private Vector3Int entityStartCoordinate;
@@ -84,7 +83,7 @@ public class Entity : MonoBehaviour
     }
     private void UpdateEntity()
 	{
-        entityCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x / gridSize), Mathf.RoundToInt(transform.position.y / gridSize), Mathf.RoundToInt(transform.position.z / gridSize));
+        entityCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
         currentTile = navigator.GetNavTile(entityCoordinate, currentTile);
         currentTile.GetComponent<NavTile>().OccupyTile();
     }
@@ -102,7 +101,7 @@ public class Entity : MonoBehaviour
             {
                 animator.SetBool("Moving", true);
                 transform.position = Vector3.MoveTowards(transform.position, targetTile.transform.position, Time.deltaTime * moveSpeed);
-                if (Vector3.Distance(transform.position, targetTile.transform.position) < (0.5f * gridSize))
+                if (Vector3.Distance(transform.position, targetTile.transform.position) < (0.5f))
                 {
                     currentTile.GetComponent<NavTile>().LeaveTile();
                 }
@@ -130,9 +129,9 @@ public class Entity : MonoBehaviour
             yield return null;
         }
         player.GetComponent<Player>().TakeDamage(attackPower);
-        while (new Vector3(transform.position.x / gridSize, transform.position.y / gridSize, transform.position.z / gridSize) != entityCoordinate)
+        while (new Vector3(transform.position.x, transform.position.y, transform.position.z) != entityCoordinate)
 		{
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(entityCoordinate.x * gridSize, entityCoordinate.y * gridSize, entityCoordinate.z * gridSize), Time.deltaTime * (attackSpeed * 2f));
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(entityCoordinate.x, entityCoordinate.y, entityCoordinate.z), Time.deltaTime * (attackSpeed * 2f));
             yield return null;
         }
         animator.SetBool("Attack", false);
@@ -187,7 +186,7 @@ public class Entity : MonoBehaviour
             GetAdjacentCoordinates(aggroWanderCoordinates);
             foreach (Vector3Int adjacent in adjacentCoordinates)
 			{
-                if (adjacent == new Vector3Int(Mathf.RoundToInt(player.transform.position.x / gridSize), Mathf.RoundToInt(player.transform.position.y / gridSize), Mathf.RoundToInt(player.transform.position.z / gridSize)))
+                if (adjacent == new Vector3Int(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y), Mathf.RoundToInt(player.transform.position.z)))
 				{
                     playerAdjacent = true;
                     break;

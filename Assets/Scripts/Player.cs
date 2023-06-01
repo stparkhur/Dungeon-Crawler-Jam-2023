@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public float maxHealthPoints = 100;
     public float healthPoints;
-    public float interactRange = 3f;
+    public float interactRange = 1.5f;
     public GameObject targetObject = null;
 
     [Header("- Attack -")]
@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     public AudioClip[] attackSFX;
     private bool canAttack = true;
 
-    private int gridSize = 2;
     private Navigator navigator;
     private Vector3Int playerCoordinate;
     private Vector3Int playerFacing;
@@ -66,7 +65,7 @@ public class Player : MonoBehaviour
     private void UpdatePlayer()
     {
         //Get Coordinate and Occupy
-        playerCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x / gridSize), Mathf.RoundToInt(transform.position.y / gridSize), Mathf.RoundToInt(transform.position.z / gridSize));
+        playerCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
         currentTile = navigator.GetNavTile(playerCoordinate, currentTile);
         currentTile.GetComponent<NavTile>().OccupyTile();
 

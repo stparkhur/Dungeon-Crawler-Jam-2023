@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class NavTile : MonoBehaviour
 {
-    private int gridSize = 2;
     public bool debugMode = false;
     [SerializeField]
     private Vector3Int tileCoordinate;
     public bool isOccupied;
     void Awake()
     {
-        tileCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x / gridSize), Mathf.RoundToInt(transform.position.y / gridSize), Mathf.RoundToInt(transform.position.z / gridSize));
+        tileCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
         GameObject.Find("Navigator").GetComponent<Navigator>().AddNavTile(tileCoordinate, this.gameObject);
     }
     public void OccupyTile()
