@@ -24,7 +24,7 @@ public class Entity : MonoBehaviour
     private Navigator navigator;
     private Vector3Int entityCoordinate;
     private Vector3Int entityStartCoordinate;
-    private float moveSpeed = 2f;
+    private float moveSpeed = 1f;
     private bool isMoving = false;
     private GameObject currentTile;
     private GameObject targetTile;
