@@ -13,7 +13,20 @@ public class NavTile : MonoBehaviour
         tileCoordinate = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
         GameObject.Find("Navigator").GetComponent<Navigator>().AddNavTile(tileCoordinate, this.gameObject);
     }
-    public void OccupyTile()
+	private void Start()
+	{
+        GameObject plane = transform.Find("Plane").gameObject;
+
+        if (debugMode)
+        {
+            plane.SetActive(true);
+        }
+        else
+		{
+            plane.SetActive(false);
+		}
+	}
+	public void OccupyTile()
 	{
         isOccupied = true;
         if(debugMode)

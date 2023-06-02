@@ -125,7 +125,7 @@ public class Entity : MonoBehaviour
         Vector3 lungePos = new Vector3((transform.position.x + player.transform.position.x) / 2f, (transform.position.y + player.transform.position.y) / 2f, (transform.position.z + player.transform.position.z) / 2f);
         while (transform.position != lungePos)
 		{
-            transform.position = Vector3.MoveTowards(transform.position, lungePos, Time.deltaTime * (attackSpeed * 2f));
+            transform.position = Vector3.MoveTowards(transform.position, lungePos, Time.deltaTime * attackSpeed);
             yield return null;
         }
         player.GetComponent<Player>().TakeDamage(attackPower);
