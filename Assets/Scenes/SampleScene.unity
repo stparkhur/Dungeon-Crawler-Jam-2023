@@ -3533,10 +3533,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 348334883700637146, guid: 78fdeeda1cd59fa4bab80d7f2523fb20, type: 3}
-      propertyPath: field of view
-      value: 70
-      objectReference: {fileID: 0}
     - target: {fileID: 4427480527995467267, guid: 78fdeeda1cd59fa4bab80d7f2523fb20, type: 3}
       propertyPath: attackFX
       value: 
