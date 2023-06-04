@@ -8,7 +8,9 @@ public class Entity : MonoBehaviour
     private float healthPoints;
     [Header("- Actions -")]
     public bool wander = false;
-    public float abilityCoodldown = 1f;
+    public bool patrol = false;
+    public bool hunt = false;
+    // public float abilityCoodldown = 1f;
     public GameObject sprite;
     public GameObject hitFX;
     public GameObject deathFX;
@@ -38,6 +40,17 @@ public class Entity : MonoBehaviour
     private List<Vector3Int> wanderCoordiantes = new List<Vector3Int>();
     private List<Vector3Int> adjacentCoordinates = new List<Vector3Int>();
     private List<Vector3Int> aggroWanderCoordinates = new List<Vector3Int>();
+
+    // Patrol Vars
+    [Header("- Patrol Variables -")]
+    public bool aggressivePatrol = false;
+    private Vector3Int patStart;
+    public GameObject[] patWaypoints;
+    private List<Vector3Int> patCoordinates = new List<Vector3Int>();
+
+    // Hunt Vars
+    [Header("- Hunt Variables -")]
+    public int huntRange = 1;
 
     // Base Attack Vars
     [Header("- Attack Variables -")]
@@ -70,6 +83,46 @@ public class Entity : MonoBehaviour
             List<Vector3Int> area = new List<Vector3Int>();
             aggroWanderCoordinates = GetArea(wanderRange +1, area);
         }
+        if (patrol)
+		{
+            patStart = entityCoordinate;
+            if (patWaypoints.Length != 0)
+			{
+                List<GameObject> list = new List<GameObject>();
+                foreach (GameObject waypoint in patWaypoints)
+				{
+                    list.Add(waypoint);
+				}
+                patCoordinates.Add(patStart);
+                foreach (GameObject waypoint in list)
+				{
+                    Vector3Int coordinate = new Vector3Int(Mathf.RoundToInt(waypoint.transform.position.x), Mathf.RoundToInt(waypoint.transform.position.y), Mathf.RoundToInt (waypoint.transform.position.z));
+                    int length = patCoordinates.Count;
+                    if (patCoordinates[length - 1] != coordinate)
+					{
+                        patCoordinates.Add(coordinate);
+					}
+				}
+                if (list.Count > 1)
+				{
+					list.Reverse();
+                    foreach (GameObject waypoint in list)
+                    {
+                        Vector3Int coordinate = new Vector3Int(Mathf.RoundToInt(waypoint.transform.position.x), Mathf.RoundToInt(waypoint.transform.position.y), Mathf.RoundToInt(waypoint.transform.position.z));
+                        int length = patCoordinates.Count;
+                        if (patCoordinates[length - 1] != coordinate)
+                        {
+                            patCoordinates.Add(coordinate);
+                        }
+                    }
+                }
+			}
+			else
+			{
+                Debug.LogError("Patrol needs at least one static game object as a waypoint");
+			}
+            Debug.Log("Pat Coord list contains " + patCoordinates.Count + " coordinates");
+		}
         readyForAction = true;
     }
 
