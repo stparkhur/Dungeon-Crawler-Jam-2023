@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Actions { Wander, Patrol, Hunt }
 public class Entity : MonoBehaviour
 {
+    
     public float maxHealthPoints = 1;
     private float healthPoints;
     [Header("- Actions -")]
-    public bool wander = false;
-    public bool patrol = false;
-    public bool hunt = false;
+    public Actions entityAction;
     // public float abilityCoodldown = 1f;
     public GameObject sprite;
     public GameObject hitFX;
@@ -73,7 +73,7 @@ public class Entity : MonoBehaviour
         //UpdateEntity needs to come first
         UpdateEntity();
         entityStartCoordinate = entityCoordinate;
-        if (wander)
+        if (entityAction == Actions.Wander)
 		{
             List<Vector3Int> area = new List<Vector3Int>();
             wanderCoordiantes = GetArea(wanderRange, area);
@@ -83,7 +83,7 @@ public class Entity : MonoBehaviour
             List<Vector3Int> area = new List<Vector3Int>();
             aggroWanderCoordinates = GetArea(wanderRange +1, area);
         }
-        if (patrol)
+        if (entityAction == Actions.Patrol)
 		{
             patStart = entityCoordinate;
             if (patWaypoints.Length != 0)
@@ -281,14 +281,23 @@ public class Entity : MonoBehaviour
     private void Action()
 	{
         readyForAction = false;
-        int r = Random.Range(0, 2);
-        if (r == 0)
+        // if (attack)
+        // if (patrol)
+        if (entityAction == Actions.Wander)
+		{
+            int r = Random.Range(0, 2);
+            if (r == 0)
+			{
+                StartCoroutine(Wait());
+            }
+            else
+			{
+                StartCoroutine(Wander());
+            }
+		}
+		else
 		{
             StartCoroutine(Wait());
-		}
-        if (r == 1 && wander)
-		{
-            StartCoroutine(Wander());
 		}
 	}
     IEnumerator Cooldown(float time)
