@@ -274,6 +274,10 @@ public class Entity : MonoBehaviour
         yield return null;
         // Cooldown after Move
     }
+    IEnumerator Patrol()
+	{
+        yield return null;
+	}
     private void Action()
 	{
         readyForAction = false;
