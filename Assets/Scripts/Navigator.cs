@@ -36,7 +36,7 @@ public class Navigator : MonoBehaviour
             return (null);
 		}
 	}
-    public List<Vector3Int> GetNavList(Vector3Int s, Vector3Int d, List<Vector3Int> navList)
+    public List<Vector3Int> GetNavList(Vector3Int s, Vector3Int d)
 	{
         // Set Positions
         startPos = s;
@@ -101,11 +101,15 @@ public class Navigator : MonoBehaviour
 				{
                     if (!searchQueue.Contains(neighborPos) && !exploredFrom.ContainsKey(neighborPos))
 					{
+                        Debug.Log("searching");
                         searchQueue.Enqueue(neighborPos);
                     }
                 }
-                // Whether the Tile is occupied or not, it was explored, add to the Dictionary
-                exploredFrom.Add(neighborPos, searchPos);
+                if (!exploredFrom.ContainsKey(neighborPos))
+				{
+                    // Whether the Tile is occupied or not, it was explored, add to the Dictionary
+                    exploredFrom.Add(neighborPos, searchPos);
+                }
             }
 		}
 	}

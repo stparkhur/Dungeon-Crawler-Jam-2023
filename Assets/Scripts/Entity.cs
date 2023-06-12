@@ -8,9 +8,7 @@ public class Entity : MonoBehaviour
     
     public float maxHealthPoints = 1;
     private float healthPoints;
-    [Header("- Actions -")]
-    public Actions entityAction;
-    // public float abilityCoodldown = 1f;
+
     public GameObject sprite;
     public GameObject hitFX;
     public GameObject deathFX;
@@ -31,7 +29,10 @@ public class Entity : MonoBehaviour
     private GameObject currentTile;
     private GameObject targetTile;
 
-    private bool readyForAction = false;
+	private bool readyForAction = false;
+
+    [Header("- Actions -")]
+    public Actions entityAction;
 
     // Wander Vars
     [Header("- Wander Variables -")]
@@ -45,6 +46,7 @@ public class Entity : MonoBehaviour
     [Header("- Patrol Variables -")]
     public bool aggressivePatrol = false;
     private Vector3Int patStart;
+    private int targetWaypoint;
     public GameObject[] patWaypoints;
     private List<Vector3Int> patCoordinates = new List<Vector3Int>();
 
@@ -122,6 +124,8 @@ public class Entity : MonoBehaviour
                 Debug.LogError("Patrol needs at least one static game object as a waypoint");
 			}
             Debug.Log("Pat Coord list contains " + patCoordinates.Count + " coordinates");
+            targetWaypoint = patCoordinates.Count - 1;
+            Debug.Log("targetWapoint = " + targetWaypoint + " coordinate " + patCoordinates[targetWaypoint]);
 		}
         readyForAction = true;
     }
@@ -275,14 +279,26 @@ public class Entity : MonoBehaviour
         // Cooldown after Move
     }
     IEnumerator Patrol()
-	{
+    {
+        //Get Next Waypoint
+
+        //Get NavList
+        List<Vector3Int> navList = navigator.GetComponent<Navigator>().GetNavList(entityCoordinate, patCoordinates[targetWaypoint]);
+        if (navList != null)
+		{
+            Debug.Log(navList.Count);
+        }
         yield return null;
+        StartCoroutine(Cooldown(0f));
 	}
     private void Action()
 	{
         readyForAction = false;
         // if (attack)
-        // if (patrol)
+        if (entityAction == Actions.Patrol)
+		{
+            StartCoroutine(Patrol());
+		}
         if (entityAction == Actions.Wander)
 		{
             int r = Random.Range(0, 2);
